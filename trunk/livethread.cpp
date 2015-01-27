@@ -392,7 +392,7 @@ bool GMyLiveThread::processCommand()
 			if (err == EDS_ERR_OK)
 			{
 				if (av != (EdsUInt32)AvTable[param1].edsdk_val)
-					err = EdsSetPropertyData(camera, kEdsPropID_Av, 0, sizeof(EdsUInt32), &param1);
+					err = EdsSetPropertyData(camera, kEdsPropID_Av, 0, sizeof(EdsUInt32), &AvTable[param1].edsdk_val);
 			}
 #endif
 #ifdef GPHOTO2

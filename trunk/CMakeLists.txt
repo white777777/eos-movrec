@@ -7,9 +7,9 @@ include(CheckIncludeFile)
 
 set(CMAKE_VERBOSE_MAKEFILE on)
 
-set(FILEVERSION_V		"0, 3, 2, 0")
-set(PRODUCTVERSION_V	"0, 3, 2, 0")
-set(VERSION				"0.3.2 beta")
+set(FILEVERSION_V		"0, 3, 3, 0")
+set(PRODUCTVERSION_V	"0, 3, 3, 0")
+set(VERSION				"0.3.3 beta")
 set(PACKAGE				${PROJECT_NAME})
 
 configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
@@ -34,7 +34,11 @@ set(EDSDK_LDFLAGS "")
 if(WIN32)
 	set(EDSDKPATH "${CMAKE_SOURCE_DIR}/EDSDK")
 	include_directories(${EDSDKPATH}/Header)
-	set(EDSDK_LDFLAGS "-L${EDSDKPATH}/Library -lEDSDK")
+	if(${CMAKE_SIZEOF_VOID_P} EQUAL "8")
+		set(EDSDK_LDFLAGS "-L${EDSDKPATH}_64 -lEDSDK")
+	else(${CMAKE_SIZEOF_VOID_P} EQUAL "8")
+		set(EDSDK_LDFLAGS "-L${EDSDKPATH}/Library -lEDSDK")
+	endif(${CMAKE_SIZEOF_VOID_P} EQUAL "8")
 	CHECK_INCLUDE_FILE(${EDSDKPATH}/Header/EDSDK.h EDSDK_H)
 	if(NOT EDSDK_H)
 		message(FATAL_ERROR "EDSDK not found!\nYou must insert EDSDK into project folder.")
@@ -66,6 +70,7 @@ set(eos_movrec_SRCS
 
 if(WIN32)
 	set(eos_movrec_SRCS ${eos_movrec_SRCS} eos_movrec.rc)
+	set_property(SOURCE eos_movrec.rc PROPERTY OBJECT_DEPENDS ${CMAKE_SOURCE_DIR}/CMakeLists.txt)
 endif(WIN32)
 
 # headers with Q_OBJECT

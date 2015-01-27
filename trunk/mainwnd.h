@@ -139,6 +139,8 @@ private:
 	};
 	struct GSavedSettings CurrSettings;
 	struct GSavedSettings BackupSettings;
+	
+	void wheelEvent(QWheelEvent* event);
 };
 
 #endif	// _mainwnd_h
