@@ -36,6 +36,7 @@ GAboutDlg::GAboutDlg(QWidget* parent)
 					  "Golubinsky Yury - Mac OS X port (<a href=\"mailto:urix@me.com\">urix@me.com</a>)<br/>"
 					  "Lukyanenko Vlad - homepage design (<a href=\"mailto:xkimx@rambler.ru\">xkimx@rambler.ru</a>)<br/>"
 					  "Emel'yanov Denis - icon maker (<a href=\"mailto:suzuntu@yandex.ru\">suzuntu@yandex.ru</a>)<br/>"
+					  "insaner - mousewhell patch<br/>"
 					  "<br/>"
 					  "homepage: <a href=\"http://valexvir.narod.ru\">http://valexvir.narod.ru</a><br/>"
 					  "sf.net page: <a href=\"http://sf.net/projects/eos-movrec\">http://sf.net/projects/eos-movrec</a><br/>"

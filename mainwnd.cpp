@@ -33,6 +33,8 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QShortcut>
+#include <QWheelEvent>
+
 
 #include "mainwnd.h"
 #include "about.h"
@@ -1113,7 +1115,6 @@ void GEOSRecWnd::slotAvSelected(int av_ind)
 	bool ok = false;
 	int dof = dofBtn->isChecked() ? 1 : 0;
 	int av = avBox->itemData(av_ind, Qt::UserRole).toInt(&ok);
-	//int dof = dofBtn->isChecked() ? 1 : 0;
 	if (LiveThread && LiveThread->isInit() && ok)
 	{
 		LiveThread->cmdSetAv(av, dof);
@@ -1447,4 +1448,34 @@ QString GEOSRecWnd::giveNextName(const QString& path)
 			name = basename.left(dot_pos) + QString("_1");
 	}
 	return dirname + name + QString(".avi");
+}
+
+
+
+void GEOSRecWnd::wheelEvent(QWheelEvent* event)
+{
+	int d = (event->delta()/120)*10;
+
+	if (d < 0) {
+		if( event->modifiers() & Qt::ShiftModifier ) {
+			slotFocusNear1();
+			}
+		else if( event->modifiers() & Qt::ControlModifier ) {
+			slotFocusNear2();
+			}
+		else {
+			slotFocusNear3();
+			}
+		}
+	else {
+		if( event->modifiers() & Qt::ShiftModifier ) {
+			slotFocusFar1();
+			}
+		else if( event->modifiers() & Qt::ControlModifier ) {
+			slotFocusFar2();
+			}
+		else {
+			slotFocusFar3();
+			}
+		}
 }

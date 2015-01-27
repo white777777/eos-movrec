@@ -7,7 +7,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{5B0D20D7-AA12-4FC8-9A4A-AF722F430738}
 AppName=EOS Camera Movie Record
-AppVerName=EOS Camera Movie Record 0.3.2 Beta
+AppVerName=EOS Camera Movie Record 0.3.3 Beta
 AppPublisher=Chernov A.A.
 AppPublisherURL=http://sourceforge.net/projects/eos-movrec/
 AppSupportURL=http://sourceforge.net/projects/eos-movrec/support/
@@ -16,8 +16,8 @@ DefaultDirName={pf}\eos_movrec
 DefaultGroupName=EOS Camera Movie Record
 AllowNoIcons=yes
 OutputDir=dist
-OutputBaseFilename=eos_movrec-0.3.2_beta-setup
-Compression=lzma
+OutputBaseFilename=eos_movrec-0.3.3_beta-setup
+Compression=lzma2
 SolidCompression=yes
 
 [Tasks]
