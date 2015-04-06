@@ -1,6 +1,6 @@
 project(eos-movrec)
 
-cmake_minimum_required(VERSION 2.6.2)
+cmake_minimum_required(VERSION 2.8.8)
 
 include(FindPkgConfig)
 include(CheckIncludeFile)
@@ -24,7 +24,7 @@ if(WIN32)
 	endif(MINGW)
 endif(WIN32)
 
-find_package(Qt4 4.4.2 COMPONENTS QtCore QtGui REQUIRED)
+find_package(Qt4 4.8.0 COMPONENTS QtCore QtGui REQUIRED)
 include(${QT_USE_FILE})
 
 add_definitions (${QT_DEFINITIONS})
