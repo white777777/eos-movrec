@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008-2010 by Чернов А.А.                                *
+ *   Copyright (C) 2008-2010 by Р§РµСЂРЅРѕРІ Рђ.Рђ.                                *
  *   valexlin@gmail.com                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -28,7 +28,7 @@
 GAboutDlg::GAboutDlg(QWidget* parent)
  : QDialog(parent)
 {
-	QString text = tr("<body bgcolor=\"%1\"><p>EOS Camera Movie Record<br/>"
+	static QString text = tr("<body bgcolor=\"%1\"><p>EOS Camera Movie Record<br/>"
 										  "Version %2"
 					  "<center>Authors:</center>"
 					  "Chernov Aleksey - main programmer (<a href=\"mailto:valexvir@yandex.ru\">valexvir@yandex.ru</a>)<br/>"
@@ -56,7 +56,7 @@ GAboutDlg::GAboutDlg(QWidget* parent)
 	QTextBrowser *browser = new QTextBrowser(this);
 	browser->setOpenExternalLinks(true);
 	browser->setFrameStyle(QFrame::NoFrame);
-	browser->setMinimumSize(300, 270);
+	browser->setMinimumSize(360, 270);
 	QString color_name = palette().color(QPalette::Window).name();
 	text.replace("%1", color_name);
 	text.replace("%2", QString(VERSION));

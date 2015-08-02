@@ -70,7 +70,7 @@ set(eos_movrec_SRCS
 
 if(WIN32)
 	set(eos_movrec_SRCS ${eos_movrec_SRCS} eos_movrec.rc)
-	set_property(SOURCE eos_movrec.rc PROPERTY OBJECT_DEPENDS ${CMAKE_SOURCE_DIR}/CMakeLists.txt)
+	set_property(SOURCE eos_movrec.rc PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 endif(WIN32)
 
 # headers with Q_OBJECT

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008-2010 by ×åðíîâ À.À.                                *
+ *   Copyright (C) 2008-2010 by Ð§ÐµÑ€Ð½Ð¾Ð² Ð.Ð.                                *
  *   valexlin@gmail.com                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -404,7 +404,15 @@ bool GMyLiveThread::processCommand()
 			err = EdsSetPropertyData(camera, kEdsPropID_Evf_DepthOfFieldPreview, 0, sizeof(EdsUInt32), &param2);
 #endif
 #ifdef GPHOTO2
-		#warning "COMMAND_SET_AV: set dof not implemented yet!"
+		if (err >= GP_OK)
+		{
+			char av_val[4];
+			if (param2)
+				strcpy(av_val, AvTable[param1].av);
+			else
+				strcpy(av_val, "0");
+			err = _gp_set_config_value_string(camera, "depthoffield", av_val, camera_context);
+		}
 #endif
 		break;
 	case COMMAND_REQ_AV:		// request Av
@@ -522,7 +530,6 @@ bool GMyLiveThread::processCommand()
 			}
 #endif
 #ifdef GPHOTO2
-			char str[3];
 			err = _gp_set_config_value_string(camera, "autoexposuremode", AEMTable[param1].gphoto_str, camera_context);
 #endif
 		}
@@ -760,6 +767,7 @@ void GMyLiveThread::run()
 	int StableFPSCount = 0;
 	long long int MustBeFrames = 0;	// need to control stable fps recording
 	int CurrTime;
+	int fail_count = 0;
 
 	char software[30];
 	char date[22];
@@ -988,7 +996,12 @@ void GMyLiveThread::run()
 				WriteMovie = false;
 				StopFromInside = false;
 			}
+			fail_count = 0;
 		}
+		else
+			fail_count++;
+		if (fail_count > 100)
+			QApplication::postEvent(Owner, new GCameraEvent(CAMERA_EVENT_SHUTDOWN));
 
 		// calc temp fps
 		if (TempTime2 - TempTime1 >= 2000)
@@ -1044,7 +1057,7 @@ void GMyLiveThread::run()
 				WorkSleep(1000*sleep_time);
 		}*/
 	}
-	// cleanup (ïðè âûõîäå èç ïðîãðàììû áåç îñòàíîâêè çàïèñè)
+	// cleanup (Ð¿Ñ€Ð¸ Ð²Ñ‹Ñ…Ð¾Ð´Ðµ Ð¸Ð· Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ñ‹ Ð±ÐµÐ· Ð¾ÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ¸ Ð·Ð°Ð¿Ð¸ÑÐ¸)
 	if (mjpeg)
 	{
 		WriteMovie = false;
@@ -1821,6 +1834,7 @@ bool GMyLiveThread::initializeGPhoto2()
 	cam_funcs->post_func = handleCameraPrePostFunc;
 #endif
 	camera = tmp_camera;
+	CameraName = QString(camera_model);
 
 	return true;
 }
@@ -1882,7 +1896,7 @@ bool GMyLiveThread::startLiveView()
 	{
 		/* Now set the toggle to the wanted value */
 		int onoff = 1;
-		ret = gp_widget_set_value (child, &onoff);
+		ret = gp_widget_set_value(child, &onoff);
 	}
 	if (ret >= GP_OK)
 	{
@@ -2007,7 +2021,7 @@ bool GMyLiveThread::downloadEvfData()
 		live_buffer::ImageMutex.unlock();
 		// end of critical section!!!
 	}
-#if 0
+#if 1
 	// this code not work, libgphoto2 always get me zero.
 	char* str_val = 0;
 	int x, y, z, c;
@@ -2034,7 +2048,7 @@ bool GMyLiveThread::downloadEvfData()
 		free(str_val);
 #endif
 
-	// TO-DO: get histogram
+	// TODO: get histogram
 	if (gpfile)
 		gp_file_free(gpfile);
 	return ret == GP_OK;
@@ -2317,7 +2331,7 @@ int GMyLiveThread::gp2_camera_check_event()
 {
 	CameraEventType event_type = GP_EVENT_UNKNOWN;
 	char* event_data;
-	int ret;
+	int ret = GP_ERROR;
 	char prop_name[64];
 
 	prop_name[0] = 0;
@@ -2354,16 +2368,16 @@ int GMyLiveThread::gp2_camera_check_event()
 				fprintf(stderr, "unknown");
 				break;
 			case GP_EVENT_TIMEOUT:
-				//fprintf(stderr, "timeout");
+				fprintf(stderr, "timeout");
 				break;
 			case GP_EVENT_FILE_ADDED:
-				//fprintf(stderr, "file added");
+				fprintf(stderr, "file added");
 				break;
 			case GP_EVENT_FOLDER_ADDED:
-				//fprintf(stderr, "folder added");
+				fprintf(stderr, "folder added");
 				break;
 			case GP_EVENT_CAPTURE_COMPLETE:
-				//fprintf(stderr, "capture complete");
+				fprintf(stderr, "capture complete");
 				break;
 			default:
 				fprintf(stderr, "%d", event_type);
@@ -2377,6 +2391,7 @@ int GMyLiveThread::gp2_camera_check_event()
 			fprintf(stderr, "\n");
 		}
 	}
+	return ret;
 }
 
 static int _gp_lookup_widget(CameraWidget*widget, const char *key, CameraWidget **child)
@@ -2407,7 +2422,7 @@ int _gp_get_config_value_string(Camera *camera, const char *key, char **str, GPC
 	return ret;
 }
 
-int _gp_set_config_value_string (Camera *camera, const char *key, const char *val, GPContext *context)
+int _gp_set_config_value_string(Camera *camera, const char *key, const char *val, GPContext *context)
 {
 	CameraWidget* widget = 0;
 	CameraWidget* child = 0;
@@ -2421,7 +2436,7 @@ int _gp_set_config_value_string (Camera *camera, const char *key, const char *va
 	if (ret >= GP_OK)
 		ret = gp_camera_set_config(camera, widget, context);
 	if (widget)
-		gp_widget_free (widget);
+		gp_widget_free(widget);
 	return ret;
 }
 

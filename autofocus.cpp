@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008-2009 by ×åðíîâ À.À.                                *
+ *   Copyright (C) 2008-2009 by Ð§ÐµÑ€Ð½Ð¾Ð² Ð.Ð.                                *
  *   valexlin@gmail.com                                                    *
  *   --                                                                    *
  *   Copyright (C) 2009 by Uterr                                           *
@@ -114,7 +114,7 @@ void GAutoFocus::NextIter(int **image_arr, int w, int h, int* cookie)
 
 	if (last_index == NoiseCounts - 1)
 	{
-		// êàëèáðîâêà øóìîâ - ïðîãðåâ àâòîôîêóñà )))
+		// ÐºÐ°Ð»Ð¸Ð±Ñ€Ð¾Ð²ÐºÐ° ÑˆÑƒÐ¼Ð¾Ð² - Ð¿Ñ€Ð¾Ð³Ñ€ÐµÐ² Ð°Ð²Ñ‚Ð¾Ñ„Ð¾ÐºÑƒÑÐ° )))
 		//Noise = (maxdispersion() - mindispersion())/2;
 		int avg = 0;
 		int s = 0;
@@ -125,7 +125,7 @@ void GAutoFocus::NextIter(int **image_arr, int w, int h, int* cookie)
 			s += (finfos[i].dispersion - avg)*
 				 (finfos[i].dispersion - avg);
 		Noise = (int)sqrt((double)s/(double)NoiseCounts);
-		Noise *= 6;		// ïðàâèëî òðåõ ñèãì
+		Noise *= 6;		// Ð¿Ñ€Ð°Ð²Ð¸Ð»Ð¾ Ñ‚Ñ€ÐµÑ… ÑÐ¸Ð³Ð¼
 		if (Noise == 0)
 			Noise = 3;
 	}
@@ -134,7 +134,7 @@ void GAutoFocus::NextIter(int **image_arr, int w, int h, int* cookie)
 	{
 		//if (abs(finf->dispersion - finfos[last_index - 1].dispersion) < Noise)
 		//	finf->dispersion = finfos[last_index - 1].dispersion;
-		// åñëè äèñïåðñèÿ äèñïåðñèé ïî÷òè íå ìåíÿåòñÿ -> îñòàíîâèòüñÿ
+		// ÐµÑÐ»Ð¸ Ð´Ð¸ÑÐ¿ÐµÑ€ÑÐ¸Ñ Ð´Ð¸ÑÐ¿ÐµÑ€ÑÐ¸Ð¹ Ð¿Ð¾Ñ‡Ñ‚Ð¸ Ð½Ðµ Ð¼ÐµÐ½ÑÐµÑ‚ÑÑ -> Ð¾ÑÑ‚Ð°Ð½Ð¾Ð²Ð¸Ñ‚ÑŒÑÑ
 		if (finfos.count() > 10 + NoiseCounts)
 		{
 			int avg = 0;

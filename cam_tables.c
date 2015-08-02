@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008-2010 by Чернов А.А.                                *
+ *   Copyright (C) 2008-2010 by Р§РµСЂРЅРѕРІ Рђ.Рђ.                                *
  *   valexlin@gmail.com                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -148,6 +148,7 @@ struct EOSTvTable TvTable[EOS_TV_TABLE_SZ] = {
 	{ 0x8C, "1/1500", "1/1500" },
 	{ 0x8D, "1/1600", "1/1600" },
 	{ 0x90, "1/2000", "1/2000" },
+	{ 0x93, "1/2500", "1/2500" },
 	{ 0x94, "1/3000", "1/3000" },
 	{ 0x95, "1/3200", "1/3200" },
 	{ 0x98, "1/4000", "1/4000" },
@@ -211,9 +212,28 @@ int findAV_str(const char* str)
 {
 	register int i;
 	register int res = EOS_AV_TABLE_SZ - 1;
+	char str1[4];
+	char str2[4];
+	size_t len;
+	strncpy(str1, str, 3);
+	str1[3] = 0;
+	len = strlen(str1);
+	if (len == 3)
+	{
+		if (str1[1] == '.' && str1[2] == '0')
+			str1[1] = 0;
+	}
 	for (i = 0; i < EOS_AV_TABLE_SZ; i++)
 	{
-		if (strcmp(str, AvTable[i].av) == 0)
+		strncpy(str2, AvTable[i].av, 3);
+		str2[3] = 0;
+		len = strlen(str2);
+		if (len == 3)
+		{
+			if (str2[1] == '.' && str2[2] == '0')
+				str2[1] = 0;
+		}
+		if (strcmp(str1, str2) == 0)
 		{
 			res = i;
 			break;
