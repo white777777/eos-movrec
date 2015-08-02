@@ -1489,7 +1489,17 @@ bool GMyLiveThread::fillCameraName()
 	return err == EDS_ERR_OK;
 #endif
 #ifdef GPHOTO2
-	return false;
+	CameraName.clear();
+	char* str_val = 0;
+	int err = _gp_get_config_value_string(camera, "cameramodel", &str_val, camera_context);
+	if (err >= GP_OK && str_val)
+	{
+		CameraName = QString(str_val);
+	}
+	if (str_val)
+		free(str_val);
+	// TODO: check EVF resolution & camera's autofocus feature.
+	return err >= GP_OK;
 #endif
 }
 
@@ -1834,8 +1844,6 @@ bool GMyLiveThread::initializeGPhoto2()
 	cam_funcs->post_func = handleCameraPrePostFunc;
 #endif
 	camera = tmp_camera;
-	CameraName = QString(camera_model);
-
 	return true;
 }
 
