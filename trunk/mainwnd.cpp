@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008-2010 by Чернов А.А.                                *
+ *   Copyright (C) 2008-2010 by Р§РµСЂРЅРѕРІ Рђ.Рђ.                                *
  *   valexlin@gmail.com                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -388,7 +388,7 @@ GEOSRecWnd::GEOSRecWnd()
 	StartTimer->setSingleShot(true);
 	connect(StartTimer, SIGNAL(timeout()), this, SLOT(slotStartTimeout()));
 	StartTimer->start(10000);*/
-	// отключено по просьбе форумчан (forum.ixbt.com)
+	// РѕС‚РєР»СЋС‡РµРЅРѕ РїРѕ РїСЂРѕСЃСЊР±Рµ С„РѕСЂСѓРјС‡Р°РЅ (forum.ixbt.com)
 	//QTimer::singleShot(1200000, this, SLOT(slotWorkTimeout()));		// max work time is 20 min
 }
 
@@ -516,7 +516,7 @@ void GEOSRecWnd::slotReconnect()
 
 		//QTimer::singleShot(4000, this, SLOT(slotStartTimeout()));
 		//StartTimer->start(4000);
-		// отключено по просьбе форумчан (forum.ixbt.com)
+		// РѕС‚РєР»СЋС‡РµРЅРѕ РїРѕ РїСЂРѕСЃСЊР±Рµ С„РѕСЂСѓРјС‡Р°РЅ (forum.ixbt.com)
 		//QTimer::singleShot(1200000, this, SLOT(slotWorkTimeout()));		// max work time is 20 min
 	}
 }
@@ -1286,7 +1286,7 @@ void GEOSRecWnd::slotHistogram()
 	}
 }
 
-// отключено по просьбе форумчан (forum.ixbt.com)
+// РѕС‚РєР»СЋС‡РµРЅРѕ РїРѕ РїСЂРѕСЃСЊР±Рµ С„РѕСЂСѓРјС‡Р°РЅ (forum.ixbt.com)
 /*void GEOSRecWnd::slotWorkTimeout()
 {
 	shutdown();

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008-2010 by ×åðíîâ À.À.                                *
+ *   Copyright (C) 2008-2010 by Ð§ÐµÑ€Ð½Ð¾Ð² Ð.Ð.                                *
  *   valexlin@gmail.com                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -156,7 +156,7 @@ void* mjpegCreateFile(const char* fname)
 	RIFFFILE* riff = (RIFFFILE*)malloc(sizeof(RIFFFILE));
 	if (!riff)
 	{
-		close(riff->fd);
+		close(fd);
 		return 0;
 	}
 	memset(riff, 0, sizeof(RIFFFILE));

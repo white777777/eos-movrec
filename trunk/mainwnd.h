@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008-2009 by Чернов А.А.                                *
+ *   Copyright (C) 2008-2009 by Р§РµСЂРЅРѕРІ Рђ.Рђ.                                *
  *   valexlin@gmail.com                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -139,7 +139,7 @@ private:
 	};
 	struct GSavedSettings CurrSettings;
 	struct GSavedSettings BackupSettings;
-	
+
 	void wheelEvent(QWheelEvent* event);
 };
 

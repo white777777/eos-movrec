@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008-2010 by Чернов А.А.                                *
+ *   Copyright (C) 2008-2010 by Р§РµСЂРЅРѕРІ Рђ.Рђ.                                *
  *   valexlin@gmail.com                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -52,7 +52,7 @@ struct EOSAEMTable
 };
 
 #define EOS_AV_TABLE_SZ		55
-#define EOS_TV_TABLE_SZ		73
+#define EOS_TV_TABLE_SZ		74
 #define EOS_ISO_TABLE_SZ	22
 #define EOS_AEM_TABLE_SZ	6
 
