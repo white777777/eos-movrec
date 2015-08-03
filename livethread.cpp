@@ -48,9 +48,11 @@ EdsError EDSCALLBACK handleStateEvent(EdsStateEvent event, EdsUInt32 parameter, 
 #endif
 
 #ifdef GPHOTO2
-/*static void ctx_error_func (GPContext *context, const char *format, va_list args, void *data);
-static void ctx_status_func (GPContext *context, const char *format, va_list args, void *data);
-static void gp2_errordumper(GPLogLevel level, const char *domain, const char *format, va_list args, void *data);*/
+#if 0
+static void ctx_error_func (GPContext *context, const char *text, void *data);
+static void ctx_status_func (GPContext *context, const char *text, void *data);
+static void gp2_errordumper(GPLogLevel level, const char *domain, const char *str, void *data);
+#endif
 static int _gp_lookup_widget(CameraWidget*widget, const char *key, CameraWidget **child);
 static int _gp_get_config_value_string(Camera *camera, const char *key, char **str, GPContext *context);
 static int _gp_set_config_value_string(Camera *camera, const char *key, const char *val, GPContext *context);
@@ -405,14 +407,7 @@ bool GMyLiveThread::processCommand()
 #endif
 #ifdef GPHOTO2
 		if (err >= GP_OK)
-		{
-			char av_val[4];
-			if (param2)
-				strcpy(av_val, AvTable[param1].av);
-			else
-				strcpy(av_val, "0");
-			err = _gp_set_config_value_string(camera, "depthoffield", av_val, camera_context);
-		}
+			err = _gp_set_config_value_string(camera, "depthoffield", param2 ? "1" : "0", camera_context);
 #endif
 		break;
 	case COMMAND_REQ_AV:		// request Av
@@ -1588,12 +1583,11 @@ bool GMyLiveThread::initializeGPhoto2()
 	if (!camera_context)
 		return false;
 
-	//gp_context_set_error_func(camera_context, ctx_error_func, NULL);
-	//gp_context_set_status_func(camera_context, ctx_status_func, NULL);
-
-	//gp_log_add_func(GP_LOG_ERROR, gp2_errordumper, NULL);
-
-
+#if 0
+	gp_context_set_error_func(camera_context, ctx_error_func, NULL);
+	gp_context_set_status_func(camera_context, ctx_status_func, NULL);
+	gp_log_add_func(GP_LOG_ERROR, gp2_errordumper, NULL);
+#endif
 
 	int ret;
 	int i;
@@ -2029,8 +2023,8 @@ bool GMyLiveThread::downloadEvfData()
 		live_buffer::ImageMutex.unlock();
 		// end of critical section!!!
 	}
-#if 1
-	// this code not work, libgphoto2 always get me zero.
+#if 0
+	// this code not work, libgphoto2 always get me zero & and this zero hardcoded in sources
 	char* str_val = 0;
 	int x, y, z, c;
 	ret = _gp_get_config_value_string(camera, "eoszoom", &str_val, camera_context);
@@ -2227,7 +2221,7 @@ void GMyLiveThread::stateEvent(EdsStateEvent event, EdsUInt32 parameter)
 #ifdef GPHOTO2
 void GMyLiveThread::propertyEvent(const char* prop_name)
 {
-	fprintf(stderr, "Property '%s' changed!\n", prop_name);
+	//fprintf(stderr, "Property '%s' changed!\n", prop_name);
 	if (strncasecmp(prop_name, "d1b0", 4) == 0)			// EVF Output device
 	{
 		fprintf(stderr, "evf\n");
@@ -2260,9 +2254,9 @@ void GMyLiveThread::propertyEvent(const char* prop_name)
 	}
 	else if (strncasecmp(prop_name, "d1b3", 4) == 0)	// EOS Zoom
 	{
+		fprintf(stderr, "eoszoom\n");
 #if 0
 		// this not work in libghoto 2.4.10
-		fprintf(stderr, "eoszoom\n");
 		char* str_val = 0;
 		int z, c;
 		int ret = _gp_get_config_value_string(camera, "eoszoom", &str_val, camera_context);
@@ -2276,14 +2270,6 @@ void GMyLiveThread::propertyEvent(const char* prop_name)
 			free(str_val);
 #endif
 	}
-	/*else if (strncasecmp(prop_name, "", 4) == 0)	//
-	{
-		;
-	}
-	else if (strncasecmp(prop_name, "", 4) == 0)	//
-	{
-		;
-	}*/
 }
 #endif
 
@@ -2311,29 +2297,30 @@ EdsError EDSCALLBACK handleStateEvent(EdsStateEvent event, EdsUInt32 parameter, 
 #endif
 
 #ifdef GPHOTO2
-/*static void
-ctx_error_func (GPContext *context, const char *format, va_list args, void *data)
+#if 0
+static void
+ctx_error_func(GPContext *context, const char *text, void *data)
 {
-	fprintf  (stderr, "\n");
-	fprintf  (stderr, "*** Contexterror ***              \n");
-	vfprintf (stderr, format, args);
-	fprintf  (stderr, "\n");
-	fflush   (stderr);
+	fprintf(stderr, "\n");
+	fprintf(stderr, "*** Contexterror ***              \n");
+	fprintf(stderr, "%s", text);
+	fprintf(stderr, "\n");
+	fflush(stderr);
 }
 
 static void
-ctx_status_func (GPContext *context, const char *format, va_list args, void *data)
+ctx_status_func(GPContext *context, const char *text, void *data)
 {
-	vfprintf (stderr, format, args);
-	fprintf  (stderr, "\n");
-	fflush   (stderr);
+	fprintf(stderr, "ctx_status_func(): text = %s\n", text);
+	fflush(stderr);
 }
 
-static void gp2_errordumper(GPLogLevel level, const char *domain, const char *format,
-				 va_list args, void *data) {
-  vfprintf(stdout, format, args);
-  fprintf(stdout, "\n");
-}*/
+static void gp2_errordumper(GPLogLevel level, const char *domain, const char *str, void *data)
+{
+	fprintf(stderr, "gp2_errordumper(): level=%d; domain=%s; str=%s", level, domain, str);
+	fprintf(stderr, "\n");
+}
+#endif
 
 int GMyLiveThread::gp2_camera_check_event()
 {
@@ -2349,7 +2336,7 @@ int GMyLiveThread::gp2_camera_check_event()
 		ret = gp_camera_wait_for_event(camera, 0, &event_type, (void**)&event_data, camera_context);
 		if (ret >= GP_OK)
 		{
-			fprintf(stderr, "event_type: ");
+			//fprintf(stderr, "event_type: ");
 			switch(event_type)
 			{
 			case GP_EVENT_UNKNOWN:
@@ -2373,30 +2360,30 @@ int GMyLiveThread::gp2_camera_check_event()
 						}
 					}
 				}
-				fprintf(stderr, "unknown");
+				//fprintf(stderr, "unknown");
 				break;
 			case GP_EVENT_TIMEOUT:
-				fprintf(stderr, "timeout");
+				//fprintf(stderr, "timeout");
 				break;
 			case GP_EVENT_FILE_ADDED:
-				fprintf(stderr, "file added");
+				//fprintf(stderr, "file added");
 				break;
 			case GP_EVENT_FOLDER_ADDED:
-				fprintf(stderr, "folder added");
+				//fprintf(stderr, "folder added");
 				break;
 			case GP_EVENT_CAPTURE_COMPLETE:
-				fprintf(stderr, "capture complete");
+				//fprintf(stderr, "capture complete");
 				break;
 			default:
-				fprintf(stderr, "%d", event_type);
+				//fprintf(stderr, "%d", event_type);
 				;
 			}
 			if (event_data)
 			{
-				fprintf(stderr, "; event_data = '%s'", event_data);
+				//fprintf(stderr, "; event_data = '%s'", event_data);
 				free(event_data);
 			}
-			fprintf(stderr, "\n");
+			//fprintf(stderr, "\n");
 		}
 	}
 	return ret;
