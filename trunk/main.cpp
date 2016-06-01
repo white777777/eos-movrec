@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008-2009 by Чернов А.А.                                *
+ *   Copyright (C) 2008-2016 by Chernov A.A.                               *
  *   valexlin@gmail.com                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,6 +20,9 @@
 
 #include <qapplication.h>
 #include "mainwnd.h"
+#ifdef GPHOTO2
+#include <locale.h>
+#endif
 
 int main(int argc, char **argv)
 {

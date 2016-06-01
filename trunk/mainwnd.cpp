@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008-2010 by Чернов А.А.                                *
+ *   Copyright (C) 2008-2016 by Чернов А.А.                                *
  *   valexlin@gmail.com                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -54,6 +54,8 @@
 #include "pixmaps/stop.xpm"
 
 #include <stdlib.h>
+#define __STDC_FORMAT_MACROS	1
+#include <inttypes.h>
 
 #ifdef __MACOS__
 	#include <CarbonCore/Folders.h>
@@ -422,13 +424,13 @@ void GEOSRecWnd::closeEvent(QCloseEvent* event)
 #endif
 		if (f)
 		{
-			fprintf(f, "all frames: " INT64_PRINTF_SPEC "\n", p->allFramesCount());
-			fprintf(f, "all writen frames: " INT64_PRINTF_SPEC "\n", p->writenCount());
-			fprintf(f, "skipped frames on painting: " INT64_PRINTF_SPEC "\n", p->skippedCount());
+			fprintf(f, "all frames: %" PRIi64 "\n", p->allFramesCount());
+			fprintf(f, "all writen frames: %" PRIi64 "\n", p->writenCount());
+			fprintf(f, "skipped frames on painting: %" PRIi64 "\n", p->skippedCount());
 			fprintf(f, "elapsed time (sec): %d\n", p->elapsedTime()/1000);
 			if (p->elapsedTime() > 0)
 			{
-				fprintf(f, "duplicated frames on writing: " INT64_PRINTF_SPEC "\n", p->duplicatedCount());
+				fprintf(f, "duplicated frames on writing: %" PRIi64 "\n", p->duplicatedCount());
 				fprintf(f, "stable FPS (calc at start): %.2f\n", p->stableFPS());
 				fprintf(f, "refresh rate(fps): %.1f\n", 1000.0*(float)p->allFramesCount()/((float)p->elapsedTime()));
 			}
@@ -1315,13 +1317,13 @@ void GEOSRecWnd::shutdown()
 #endif
 	if (f)
 	{
-		fprintf(f, "all frames: " INT64_PRINTF_SPEC "\n", p->allFramesCount());
-		fprintf(f, "all writen frames: " INT64_PRINTF_SPEC "\n", p->writenCount());
-		fprintf(f, "skipped frames on painting: " INT64_PRINTF_SPEC "\n", p->skippedCount());
+		fprintf(f, "all frames: %" PRIi64 "\n", p->allFramesCount());
+		fprintf(f, "all writen frames: %" PRIi64 "\n", p->writenCount());
+		fprintf(f, "skipped frames on painting: %" PRIi64 "\n", p->skippedCount());
 		fprintf(f, "elapsed time (sec): %d\n", p->elapsedTime()/1000);
 		if (p->elapsedTime() > 0)
 		{
-			fprintf(f, "duplicated frames on writing: " INT64_PRINTF_SPEC "\n", p->duplicatedCount());
+			fprintf(f, "duplicated frames on writing: &" PRIi64 "\n", p->duplicatedCount());
 			fprintf(f, "stable FPS (calc at start): %.2f\n", p->stableFPS());
 			fprintf(f, "refresh rate(fps): %.1f\n", 1000.0*(float)p->allFramesCount()/((float)p->elapsedTime()));
 		}

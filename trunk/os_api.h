@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008-2009 by Чернов А.А.                                *
+ *   Copyright (C) 2008-2016 by Чернов А.А.                                *
  *   valexlin@gmail.com                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -29,13 +29,6 @@ void OSSleep(int ms);
 int OSGetTickCount();
 
 int OSProcessMsg();
-
-#if defined(__MINGW32__) || defined (_MSC_VER)
-#define INT64_PRINTF_SPEC	"%I64d"
-#endif
-#ifdef __GLIBC__
-#define INT64_PRINTF_SPEC	"%lld"
-#endif
 
 #ifdef __cplusplus
 }

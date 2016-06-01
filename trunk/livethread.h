@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008-2010 by Р§РµСЂРЅРѕРІ Рђ.Рђ.                                *
+ *   Copyright (C) 2008-2016 by Чернов А.А.                                *
  *   valexlin@gmail.com                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -42,7 +42,7 @@
 #include <gphoto2/gphoto2.h>
 #include <gphoto2/gphoto2-camera.h>
 #endif
-#include "types.h"
+#include <inttypes.h>
 
 class QWidget;
 
@@ -106,10 +106,10 @@ public:
 	QString cameraName() const { return CameraName; }
 	struct EOSCamFeatures cameraFeatures() const { return CamFeatures; }
 	// stat function
-	long long int allFramesCount() { return AllFramesCount; }
-	long long int writenCount() { return WritenCount; }
-	long long int skippedCount() { return SkippedCount; }
-	long long int duplicatedCount() { return DuplicatedCount; }
+	int64_t allFramesCount() { return AllFramesCount; }
+	int64_t writenCount() { return WritenCount; }
+	int64_t skippedCount() { return SkippedCount; }
+	int64_t duplicatedCount() { return DuplicatedCount; }
 	double stableFPS() { return StableFPS; }
 	int elapsedTime() { return ElapsedTime; }
 	int zoom() const { return Zoom; }
@@ -201,10 +201,10 @@ private:
 	int TimeTimer;
 	int FramesTimer;
 	// for statistics
-	long long int AllFramesCount;
-	long long int WritenCount;
-	long long int SkippedCount;
-	long long int DuplicatedCount;
+	int64_t AllFramesCount;
+	int64_t WritenCount;
+	int64_t SkippedCount;
+	int64_t DuplicatedCount;
 	int ElapsedTime;
 };
 
