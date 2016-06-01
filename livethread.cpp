@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008-2010 by Р§РµСЂРЅРѕРІ Рђ.Рђ.                                *
+ *   Copyright (C) 2008-2016 by Чернов А.А.                                *
  *   valexlin@gmail.com                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -760,7 +760,7 @@ void GMyLiveThread::run()
 	int TempFrameCount = 0;
 	double TempFPS;
 	int StableFPSCount = 0;
-	long long int MustBeFrames = 0;	// need to control stable fps recording
+	int64_t MustBeFrames = 0;	// need to control stable fps recording
 	int CurrTime;
 	int fail_count = 0;
 
@@ -1025,7 +1025,7 @@ void GMyLiveThread::run()
 				wrt_time = (CurrTime - StartWriteTime)/1000;
 			else //if (PrevWriteMovie)
 				wrt_time = (StopWriteTime - StartWriteTime)/1000;
-			counters.append(QVariant(WritenCount));
+			counters.append(QVariant((qlonglong)WritenCount));
 			counters.append(QVariant(wrt_time));
 			QApplication::postEvent(Owner, new GCameraEvent(CAMERA_EVENT_UPDATE_COUNTERS, QVariant(counters)));
 		}

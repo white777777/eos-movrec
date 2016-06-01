@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008-2010 by Чернов А.А.                                *
+ *   Copyright (C) 2008-2016 by Chernov A.A.                               *
  *   valexlin@gmail.com                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,8 +25,7 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "types.h"
+#include <inttypes.h>
 
 #ifdef __GLIBC__
 #include <unistd.h>
@@ -51,74 +50,74 @@
 
 struct RiffChunk
 {
-	__uint32_t ckID;				// fourcc
-	__uint32_t ckSize;				// size of chunk data
+	uint32_t ckID;					// fourcc
+	uint32_t ckSize;				// size of chunk data
 	unsigned char *ckData;			// chunk data
 };
 
 // size - 56
 struct AVIHeader
 {
-	__uint32_t dwMicroSecPerFrame;
-	__uint32_t dwMaxBytesPerSec;	//
-	__uint32_t dwReserved1;			// must be 0
-	__uint32_t dwFlags;				// 0 ?
-	__uint32_t dwTotalFrames;
-	__uint32_t dwInitialFrames;		// here must be 0
-	__uint32_t dwStreams;			// number of streams
-	__uint32_t dwSuggestedBufferSize;
-	__uint32_t dwWidth;				// width of frame
-	__uint32_t dwHeight;			// height of frame
-	__uint32_t dwReserved[4];		// all must be 0
+	uint32_t dwMicroSecPerFrame;
+	uint32_t dwMaxBytesPerSec;		//
+	uint32_t dwReserved1;			// must be 0
+	uint32_t dwFlags;				// 0 ?
+	uint32_t dwTotalFrames;
+	uint32_t dwInitialFrames;		// here must be 0
+	uint32_t dwStreams;				// number of streams
+	uint32_t dwSuggestedBufferSize;
+	uint32_t dwWidth;				// width of frame
+	uint32_t dwHeight;				// height of frame
+	uint32_t dwReserved[4];			// all must be 0
 };
 
 // size - 56
 struct AVIStreamHeader
 {
-	__uint32_t fccType;				// 'vids'
-	__uint32_t fccHandler;			// 'mjpg'
-	__uint32_t dwFlags;				// here 0
-	__uint16_t wPriority;			// here 0
-	__uint16_t wLanguage;			// here 0
-	__uint32_t dwInitialFrames;		// here 0
-	__uint32_t dwScale;				// dwMicroSecPerFrame
-	__uint32_t dwRate;				// 1000000
-	__uint32_t dwStart;				// here 0
-	__uint32_t dwLength;			// dwTotalFrames
-	__uint32_t dwSuggestedBufferSize;	//  size largest chunk in the stream
-	__uint32_t dwQuality;			// from 0 to 10000
-	__uint32_t dwSampleSize;		// here 0
+	uint32_t fccType;				// 'vids'
+	uint32_t fccHandler;			// 'mjpg'
+	uint32_t dwFlags;				// here 0
+	uint16_t wPriority;				// here 0
+	uint16_t wLanguage;				// here 0
+	uint32_t dwInitialFrames;		// here 0
+	uint32_t dwScale;				// dwMicroSecPerFrame
+	uint32_t dwRate;				// 1000000
+	uint32_t dwStart;				// here 0
+	uint32_t dwLength;				// dwTotalFrames
+	uint32_t dwSuggestedBufferSize;	//  size largest chunk in the stream
+	uint32_t dwQuality;				// from 0 to 10000
+	uint32_t dwSampleSize;			// here 0
 	struct							// here all field zero
 	{
-		__uint16_t left;
-		__uint16_t top;
-		__uint16_t right;
-		__uint16_t bottom;
+		uint16_t left;
+		uint16_t top;
+		uint16_t right;
+		uint16_t bottom;
 	} rcFrame;
 };
 
 // size - 40
 struct AVIStreamFormat
 {
-	__uint32_t biSize;				// must be 40
-	__int32_t   biWidth;			// width of frame
-	__int32_t   biHeight;			// height of frame
-	__uint16_t biPlanes;			// here must be 1
-	__uint16_t biBitCount;			// here must be 24
-	__uint32_t biCompression;		// here 'MJPG' or 0x47504A4D
-	__uint32_t biSizeImage;			// size, in bytes, of the image (in D90_orig.avi 2764800)
-	__int32_t   biXPelsPerMeter;	// here 0
-	__int32_t   biYPelsPerMeter;	// here 0
-	__uint32_t biClrUsed;			// here 0
-	__uint32_t biClrImportant;		// here 0
+	uint32_t biSize;				// must be 40
+	int32_t  biWidth;				// width of frame
+	int32_t  biHeight;				// height of frame
+	uint16_t biPlanes;				// here must be 1
+	uint16_t biBitCount;			// here must be 24
+	uint32_t biCompression;			// here 'MJPG' or 0x47504A4D
+	uint32_t biSizeImage;			// size, in bytes, of the image (in D90_orig.avi 2764800)
+	int32_t  biXPelsPerMeter;		// here 0
+	int32_t  biYPelsPerMeter;		// here 0
+	uint32_t biClrUsed;				// here 0
+	uint32_t biClrImportant;		// here 0
 };
 
 struct AVIIndexChunk
 {
-	__uint32_t ckID;
-	__uint32_t flags;				// unknown?
-	__uint32_t offset;				// offset from 'movi' to video frame chunk
-	__uint32_t size;				// size of video frame chunk
+	uint32_t ckID;
+	uint32_t flags;					// unknown?
+	uint32_t offset;				// offset from 'movi' to video frame chunk
+	uint32_t size;					// size of video frame chunk
 };
 
 #pragma pack(pop)
@@ -126,16 +125,16 @@ struct AVIIndexChunk
 typedef struct
 {
 	int fd;							// file descriptor
-	__uint32_t realHeaderSize;
-	__uint32_t frames;
+	uint32_t realHeaderSize;
+	uint32_t frames;
 	double fps;
 	unsigned char* index;
-	__uint32_t index_curpos;
-	__uint32_t* pindex_real_size;
-	__uint32_t index_size;
+	uint32_t index_curpos;
+	uint32_t* pindex_real_size;
+	uint32_t index_size;
 	unsigned char* header;
-	__uint32_t *pFileSize;
-	__uint32_t *pDataSize;
+	uint32_t *pFileSize;
+	uint32_t *pDataSize;
 	struct AVIHeader* aviheader;
 	struct AVIStreamHeader* avistreamheader;
 	struct AVIStreamFormat* avistreamformat;
@@ -180,23 +179,23 @@ void* mjpegCreateFile(const char* fname)
 		return 0;
 	}
 
-	riff->pFileSize = (__uint32_t*)(riff->header + 4);
+	riff->pFileSize = (uint32_t*)(riff->header + 4);
 	*riff->pFileSize = HEADERBYTES - 8;
-	__uint32_t* pnum = 0;
-	__uint32_t offset = 0;
+	uint32_t* pnum = 0;
+	uint32_t offset = 0;
 	char* ptr = (char*)riff->header;					// addr = 0
 	strncpy(ptr, "RIFF", 4);
 	offset += 8;
 	ptr = (char*)(riff->header + offset);				// addr = 8
 	strncpy(ptr, "AVI LIST", 8);
 	offset += 8;
-	pnum = (__uint32_t*)(riff->header + offset);		// addr = 16
+	pnum = (uint32_t*)(riff->header + offset);			// addr = 16
 	*pnum = 40 + sizeof(struct AVIHeader) + sizeof(struct AVIStreamHeader) + sizeof(struct AVIStreamFormat);
 	offset += 4;
 	ptr = (char*)(riff->header + offset);				// addr = 20
 	strncpy(ptr, "hdrlavih", 8);
 	offset += 8;
-	pnum = (__uint32_t*)(riff->header + offset);		// addr = 28
+	pnum = (uint32_t*)(riff->header + offset);			// addr = 28
 	*pnum = sizeof(struct AVIHeader);
 	offset += 4;
 	riff->aviheader = (struct AVIHeader*)(riff->header + offset);	// addr = 32
@@ -206,13 +205,13 @@ void* mjpegCreateFile(const char* fname)
 	ptr = (char*)(riff->header + offset);				// addr = 88
 	strncpy(ptr, "LIST", 4);
 	offset += 4;
-	pnum = (__uint32_t*)(riff->header + offset);		// addr = 92
+	pnum = (uint32_t*)(riff->header + offset);			// addr = 92
 	*pnum = 20 + sizeof(struct AVIStreamHeader) + sizeof(struct AVIStreamFormat);
 	offset += 4;
 	ptr = (char*)(riff->header + offset);				// addr = 96
 	strncpy(ptr, "strlstrh", 8);
 	offset += 8;
-	pnum = (__uint32_t*)(riff->header + offset);		// addr = 104
+	pnum = (uint32_t*)(riff->header + offset);			// addr = 104
 	*pnum = sizeof(struct AVIStreamHeader);
 	offset += 4;
 	riff->avistreamheader = (struct AVIStreamHeader*)(riff->header + offset);	// addr = 108
@@ -222,7 +221,7 @@ void* mjpegCreateFile(const char* fname)
 	ptr = (char*)(riff->header + offset);				// addr = 164
 	strncpy(ptr, "strf", 4);
 	offset += 4;
-	pnum = (__uint32_t*)(riff->header + offset);		// addr = 168
+	pnum = (uint32_t*)(riff->header + offset);			// addr = 168
 	*pnum = sizeof(struct AVIStreamFormat);
 	offset += 4;
 	riff->avistreamformat = (struct AVIStreamFormat*)(riff->header + offset);	// addr = 172
@@ -231,13 +230,13 @@ void* mjpegCreateFile(const char* fname)
 	ptr = (char*)(riff->header + offset);				// addr = 212
 	strncpy(ptr, "LIST", 4);
 	offset += 4;
-	pnum = (__uint32_t*)(riff->header + offset);		// addr = 216
+	pnum = (uint32_t*)(riff->header + offset);			// addr = 216
 	*pnum = 12 + MAXSOFTDESC_SZ + 8 + MAXCOMMENT_SZ + 8 + MAXDATE_SZ;	// ISFT, ICMT & ICRD
 	offset += 4;
 	ptr = (char*)(riff->header + offset);				// addr = 220
 	strncpy(ptr, "INFOISFT", 8);
 	offset += 8;
-	pnum = (__uint32_t*)(riff->header + offset);		// addr = 228
+	pnum = (uint32_t*)(riff->header + offset);			// addr = 228
 	*pnum = MAXSOFTDESC_SZ;								// ISFT
 	offset += 4;
 	riff->pSoftStr = (char*)(riff->header + offset);	// addr = 232
@@ -246,7 +245,7 @@ void* mjpegCreateFile(const char* fname)
 	ptr = (char*)(riff->header + offset);				// addr = 262
 	strncpy(ptr, "ICMT", 4);
 	offset += 4;
-	pnum = (__uint32_t*)(riff->header + offset);		// addr = 266
+	pnum = (uint32_t*)(riff->header + offset);			// addr = 266
 	*pnum = MAXCOMMENT_SZ;								// ICMT
 	offset += 4;
 	riff->pCommentStr = (char*)(riff->header + offset);	// addr = 270
@@ -256,7 +255,7 @@ void* mjpegCreateFile(const char* fname)
 	ptr = (char*)(riff->header + offset);				// addr = 334
 	strncpy(ptr, "ICRD", 4);
 	offset += 4;
-	pnum = (__uint32_t*)(riff->header + offset);		// addr = 338
+	pnum = (uint32_t*)(riff->header + offset);			// addr = 338
 	*pnum = MAXDATE_SZ;									// ICRD
 	offset += 4;
 	riff->pDateStr = (char*)(riff->header + offset);	// addr = 342
@@ -269,20 +268,20 @@ void* mjpegCreateFile(const char* fname)
 	ptr = (char*)(riff->header + offset);				// addr = 364
 	strncpy(ptr, "JUNK", 4);
 	offset += 4;
-	__uint32_t junk_size = HEADERBYTES - riff->realHeaderSize - 20;
-	pnum = (__uint32_t*)(riff->header + offset);		// addr = 368
+	uint32_t junk_size = HEADERBYTES - riff->realHeaderSize - 20;
+	pnum = (uint32_t*)(riff->header + offset);			// addr = 368
 	*pnum = junk_size;
 	offset += 4;
 
 	ptr = (char*)(riff->header + HEADERBYTES - 12);		// addr = 4084
 	strncpy(ptr, "LIST", 4);
-	riff->pDataSize = (__uint32_t*)(riff->header + HEADERBYTES - 8);	// 4088
+	riff->pDataSize = (uint32_t*)(riff->header + HEADERBYTES - 8);	// 4088
 	*riff->pDataSize = 4;
 	ptr += 8;											// addr = 4092
 	strncpy(ptr, "movi", 4);
 
 	// for index chunk
-	riff->pindex_real_size = (__uint32_t*)(riff->index + 4);
+	riff->pindex_real_size = (uint32_t*)(riff->index + 4);
 	ptr = (char*)riff->index;
 	strncpy(ptr, "idx1", 4);
 	*riff->pindex_real_size = 0;
@@ -373,12 +372,12 @@ int mjpegSetup(void* p, int fwidth, int fheight, double fps, int quality)
 		return 0;
 	rf->fps = fps;
 	//memset(rf->aviheader, 0, sizeof(struct AVIHeader));
-	rf->aviheader->dwMicroSecPerFrame = (__uint32_t)(1000000.0/fps);
+	rf->aviheader->dwMicroSecPerFrame = (uint32_t)(1000000.0/fps);
 	rf->aviheader->dwWidth = fwidth;
 	rf->aviheader->dwHeight = fheight;
 	//memset(rf->avistreamheader, 0, sizeof(struct AVIStreamHeader));
 	rf->avistreamheader->dwScale = 1000;
-	rf->avistreamheader->dwRate = (__uint32_t)(1000.0*fps);
+	rf->avistreamheader->dwRate = (uint32_t)(1000.0*fps);
 	rf->avistreamheader->dwQuality = quality;
 	//memset(rf->avistreamformat, 0, sizeof(struct AVIStreamFormat));
 	rf->avistreamformat->biSize = 40;
@@ -458,7 +457,7 @@ int mjpegWriteChunk(void* p, const unsigned char* jpeg_data, unsigned int size)
 		if (p)
 		{
 			rf->index = p;
-			rf->pindex_real_size = (__uint32_t*)(rf->index + 4);
+			rf->pindex_real_size = (uint32_t*)(rf->index + 4);
 			rf->index_size += 0x100;
 		}
 		else
@@ -472,8 +471,8 @@ int mjpegWriteChunk(void* p, const unsigned char* jpeg_data, unsigned int size)
 
 	char buff[9];
 	strncpy(buff, "00dc", 4);
-	__uint32_t* pnum = (__uint32_t*)(buff + 4);
-	*pnum = (__uint32_t)size;
+	uint32_t* pnum = (uint32_t*)(buff + 4);
+	*pnum = (uint32_t)size;
 	if (cached_write(rf, buff, 8) != 8)
 		return 0;
 	if (cached_write(rf, jpeg_data, size) != size)
@@ -485,12 +484,12 @@ int mjpegWriteChunk(void* p, const unsigned char* jpeg_data, unsigned int size)
 			return 0;
 	}
 	// fill index
-	__uint32_t key_frame = (__uint32_t)(rf->fps);
+	uint32_t key_frame = (uint32_t)(rf->fps);
 	struct AVIIndexChunk* ick = (struct AVIIndexChunk*)(rf->index + rf->index_curpos);
 	ick->ckID = 0x63643030;					// '00dc'
 	ick->flags = (rf->frames % key_frame == 0) ? 0x10 : 0;
 	ick->offset = *rf->pDataSize;
-	ick->size = (__uint32_t)size;
+	ick->size = (uint32_t)size;
 	rf->index_curpos += sizeof(struct AVIIndexChunk);
 	*rf->pindex_real_size += sizeof(struct AVIIndexChunk);
 	// increase counters
